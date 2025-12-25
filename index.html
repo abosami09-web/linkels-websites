@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Linkel | Smart NFC Business Cards</title>
+  
+  <meta name="description" content="Linkel offers smart NFC business cards that let you share your profile, portfolio, and payment links instantly with a tap. Secure, eco-friendly, and easy to use." />
+  
+  <meta name="robots" content="index, follow" />
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    .navbar {
+      background-color: #fff;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.1rem;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-container {
+      display: flex;
+      justify-content: space-between;
+      height: 80px;
+      width: 100%;
+      max-width: 1500px;
+      padding: 0 50px;
+    }
+    .navbar-logo {
+      color: #333;
+      justify-self: start;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      letter-spacing: -0.5px;
+    }
+    .logo-text {
+      color: #333;
+    }
+    .logo-highlight {
+      background: linear-gradient(90deg, #0066ff 0%, #00a1ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-left: 5px;
+    }
+    .navbar-menu {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      text-align: center;
+    }
+    .navbar-item {
+      height: 80px;
+    }
+    .navbar-links {
+      color: #333;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      height: 100%;
+      font-weight: 500;
+      position: relative;
+    }
+    .navbar-links:hover {
+      color: #0066ff;
+      transition: all 0.3s ease;
+    }
+    .navbar-links:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 3px;
+      bottom: 20px;
+      left: 50%;
+      background: linear-gradient(90deg, #0066ff 0%, #00a1ff 100%);
+      transition: all 0.3s ease;
+    }
+    .navbar-links:hover:after {
+      width: 80%;
+      left: 10%;
+    }
+    .button {
+      padding: 10px 25px;
+      background: linear-gradient(90deg, #0066ff 0%, #00a1ff 100%);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
+    }
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 102, 255, 0.4);
+    }
+    .navbar-toggle {
+      display: none;
+      cursor: pointer;
+    }
+    .bar {
+      display: block;
+      width: 25px;
+      height: 3px;
+      margin: 5px auto;
+      transition: all 0.3s ease-in-out;
+      background-color: #333;
+    }
+    @media screen and (max-width: 960px) {
+      .navbar-container {
+        padding: 0 30px;
+      }
+      .navbar-menu {
+        position: fixed;
+        left: -100%;
+        top: 80px;
+        flex-direction: column;
+        background-color: #fff;
+        width: 100%;
+        height: calc(100vh - 80px);
+        text-align: center;
+        transition: all 0.5s ease;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+      .navbar-menu.active {
+        left: 0;
+      }
+      .navbar-item {
+        height: auto;
+        padding: 20px 0;
+      }
+      .navbar-links {
+        padding: 1.5rem;
+        width: 100%;
+        display: table;
+      }
+      .navbar-links:after {
+        bottom: 10px;
+      }
+      .navbar-toggle {
+        display: block;
+      }
+      .navbar-toggle.active .bar:nth-child(2) {
+        opacity: 0;
+      }
+      .navbar-toggle.active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+      }
+      .navbar-toggle.active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+    }
+    .hero {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .hero-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      width: 100%;
+    }
+    .hero-content {
+      flex: 1;
+      max-width: 600px;
+    }
+    .hero-image {
+      position: relative;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.2;
+      color: #212529;
+      margin-bottom: 20px;
+    }
+    .subtitle {
+      font-size: 1.2rem;
+      color: #495057;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    .cta-buttons {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 40px;
+    }
+    .primary-button {
+      background: linear-gradient(90deg, #0066ff 0%, #00a1ff 100%);
+      color: white;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+    .secondary-button {
+      background: white;
+      color: #0066ff;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: 600;
+      border: 1px solid #dee2e6;
+      transition: all 0.3s ease;
+    }
+    .primary-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 102, 255, 0.4);
+    }
+    .secondary-button:hover {
+      background: #f8f9fa;
+      border-color: #adb5bd;
+    }
+    @media (max-width: 977px) {
+  .hero-image {
+    display: none;
+  }
+  .card-image {
+    display: none;
+  }
+}
+
+    .card-image {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 2;
+      transition: transform 0.5s ease;
+    }
+    .nfc-chip {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: radial-gradient(circle, #555 0%, #222 100%);
+      border-radius: 5px;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    .hover-effect {
+      position: absolute;
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle, rgba(0, 102, 255, 0.1) 0%, rgba(0, 102, 255, 0) 70%);
+      z-index: 1;
+      animation: pulse 8s infinite alternate;
+    }
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(1.05);
+        opacity: 0.8;
+      }
+    }
+    .why-choose {
+      padding: 100px 0;
+      background-color: #fff;
+    }
+    .section-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .section-header h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #212529;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #0066ff 0%, #00a1ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .section-subtitle {
+      font-size: 1.2rem;
+      color: #495057;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    .benefit-card {
+      background: #fff;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid #e9ecef;
+    }
+    .benefit-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 102, 255, 0.1);
+    }
+    .benefit-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #0066ff 0%, #00a1ff 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      color: white;
+      font-size: 1.5rem;
+    }
+    .benefit-title {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      color: #212529;
+    }
+    .benefit-description {
+      color: #6c757d;
+      line-height: 1.6;
+    }
+    @media (max-width: 992px) {
+      .hero-container {
+        flex-direction: column;
+        text-align: center;
+      }
+      .cta-buttons {
+        justify-content: center;
+      }
+      h1 {
+        font-size: 2.5rem;
+      }
+      .section-header h2 {
+        font-size: 2rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .benefits-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 576px) {
+      .cta-buttons {
+        flex-direction: column;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      .section-header h2 {
+        font-size: 1.8rem;
+      }
+    }
+    .how-it-works {
+      padding: 100px 0;
+      background-color: #f8f9fa;
+    }
+    .steps-container {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .steps-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 40px;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(to bottom, #0066ff, #00a1ff);
+      z-index: 1;
+    }
+    .step {
+      display: flex;
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 2;
+    }
+    .step-number {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #0066ff 0%, #00a1ff 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-right: 30px;
+      flex-shrink: 0;
+      box-shadow: 0 10px 20px rgba(0, 102, 255, 0.2);
+    }
+    .step-content {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      flex-grow: 1;
+      border: 1px solid #e9ecef;
+    }
+    .step-title {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      color: #212529;
+    }
+    .step-description {
+      color: #6c757d;
+      line-height: 1.6;
+    }
+    @media (max-width: 768px) {
+      .steps-container::before {
+        left: 35px;
+      }
+      .step {
+        flex-direction: column;
+      }
+      .step-number {
+        margin-right: 0;
+        margin-bottom: 20px;
+        width: 70px;
+        height: 70px;
+      }
+    }
+    @media (max-width: 576px) {
+      .steps-container::before {
+        left: 30px;
+      }
+      .step-number {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+      }
+      .step-content {
+        padding: 20px;
+      }
+      .step-title {
+        font-size: 1.2rem;
+      }
+    }
+    .testimonials {
+      padding: 100px 0;
+      background-color: #fff;
+    }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+    }
+    .testimonial-card {
+      background: #fff;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid #e9ecef;
+      display: flex;
+      flex-direction: column;
+    }
+    .testimonial-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 102, 255, 0.1);
+    }
+    .testimonial-emoji {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    .testimonial-text {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #495057;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+    .testimonial-author {
+      border-top: 1px solid #e9ecef;
+      padding-top: 15px;
+    }
+    .author-name {
+      font-weight: 600;
+      color: #212529;
+      margin-bottom: 5px;
+    }
+    .author-title {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+    .section-header .emoji {
+      font-size: 1.5rem;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+    @media (max-width: 768px) {
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .faqs {
+      padding: 100px 0;
+      background-color: #f8f9fa;
+    }
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      margin-bottom: 15px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    .faq-question {
+      width: 100%;
+      padding: 20px 25px;
+      text-align: left;
+      background: white;
+      border: none;
+      border-bottom: 1px solid #e9ecef;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #212529;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+    .faq-question:hover {
+      background-color: #f8f9fa;
+    }
+    .faq-question i {
+      transition: transform 0.3s ease;
+    }
+    .faq-question.active i {
+      transform: rotate(180deg);
+    }
+    .faq-answer {
+      background: white;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .faq-answer p {
+      padding: 20px 25px;
+      color: #495057;
+      line-height: 1.6;
+      margin: 0;
+    }
+    @media (max-width: 768px) {
+      .faq-question {
+        font-size: 1rem;
+        padding: 15px 20px;
+      }
+      .faq-answer p {
+        padding: 15px 20px;
+      }
+    }
+    .contact {
+      padding: 100px 0;
+      background-color: #fff;
+    }
+    .contact-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+    }
+    .contact-content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #212529;
+    }
+    .contact-subtitle {
+      font-size: 1.2rem;
+      color: #495057;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+    .contact-info {
+      margin-bottom: 40px;
+    }
+    .contact-method {
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    .contact-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #0066ff 0%, #00a1ff 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 20px;
+      color: white;
+      font-size: 1.2rem;
+    }
+    .contact-details h3 {
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+      color: #212529;
+    }
+    .contact-details a {
+      color: #0066ff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .contact-details a:hover {
+      color: #0044cc;
+    }
+    .contact-message {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 40px;
+    }
+    .contact-message p {
+      color: #495057;
+      line-height: 1.6;
+    }
+    .contact-form {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #0066ff;
+    }
+    .form-group textarea {
+      resize: vertical;
+    }
+    @media (max-width: 992px) {
+      .contact-container {
+        grid-template-columns: 1fr;
+      }
+      .contact-content {
+        margin-bottom: 50px;
+      }
+    }
+    @media (max-width: 576px) {
+      .contact {
+        padding: 60px 0;
+      }
+      .contact-content h2 {
+        font-size: 2rem;
+      }
+      .contact-form {
+        padding: 30px 20px;
+      }
+    }
+    .footer {
+      background: #f8f9fa;
+      padding: 50px 20px;
+      text-align: center;
+      border-top: 1px solid #dee2e6;
+    }
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .footer-brand {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+    .footer-brand p {
+      font-size: 1rem;
+      color: #6c757d;
+      margin-top: 5px;
+    }
+    .footer-links {
+      margin: 20px 0;
+    }
+    .footer-links a {
+      color: #495057;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .footer-links a:hover {
+      color: #0066ff;
+    }
+    .footer-social a {
+      color: #0066ff;
+      margin: 0 10px;
+      font-size: 1.2rem;
+      transition: color 0.3s ease;
+    }
+    .footer-social a:hover {
+      color: #0044cc;
+    }
+    .footer-copy {
+      margin-top: 30px;
+      font-size: 0.9rem;
+      color: #adb5bd;
+    }
+        .navbar-menu {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    /* Login Button Styles */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.login-button {
+  padding: 6px 16px;
+  font-size: 0.9rem;
+  background: transparent;
+  color: #0066ff;
+  border: 2px solid #0066ff;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  height: fit-content;
+  margin-left: 10px;
+}
+
+.login-button:hover {
+  background: #0066ff;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 960px) {
+  .nav-actions {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 0;
+  }
+  
+  .login-button {
+    margin: 5px 0 0 0;
+    padding: 8px 20px;
+    order: 1; /* Ensures login button appears below nav items */
+  }
+  
+  .navbar-menu.active {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="#" class="navbar-logo">
+        <span class="logo-text">Link</span><span class="logo-highlight">el</span>
+      </a>
+      <div class="navbar-toggle" id="mobile-menu" aria-label="Toggle navigation">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+      <div class="nav-actions">
+        <ul class="navbar-menu">
+          <li class="navbar-item"><a href="#home" class="navbar-links">Home</a></li>
+          <li class="navbar-item"><a href="#why-choose" class="navbar-links">Why Choose</a></li>
+          <li class="navbar-item"><a href="#how-it-works" class="navbar-links">How It Works?</a></li>
+          <li class="navbar-item"><a href="#testimonials" class="navbar-links">Testimonials</a></li>
+          <li class="navbar-item"><a href="#faqs" class="navbar-links">FAQs</a></li>
+          <li class="navbar-item"><a href="#contact" class="navbar-links">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <section id="home" class="hero">
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1>Your Entire Profile,<br>One Tap Away</h1>
+        <p class="subtitle">Linkel's NFC cards make sharing effortless — tap to share contacts, portfolios, or payment links instantly.</p>
+        <div class="cta-buttons">
+          <a href="#contact" class="button primary-button">Order Now</a>
+          <a href="#how-it-works" class="button secondary-button">
+            <i class="fas fa-paper-plane"></i> Learn More
+          </a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="cards.png" alt="Linkel NFC Business Card" class="card-image" loading="lazy">
+        <div class="nfc-chip"></div>
+        <div class="hover-effect"></div>
+      </div>
+    </div>
+  </section>
+  <section id="why-choose" class="why-choose">
+    <div class="section-container">
+      <div class="section-header">
+        <h2>Why Choose <span class="gradient-text">Smart Business Cards</span>?</h2>
+        <p class="section-subtitle">Leave paper business cards in the past and start making valuable connections instantly. With Linkel, sharing your profile, portfolio, or payment details is as simple as a tap — secure, eco-friendly, and designed for today's smart world.</p>
+      </div>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h3 class="benefit-title">Instant Sharing</h3>
+          <p class="benefit-description">Share your contact info, social profiles, or portfolio with just a tap. No more fumbling with paper cards or typing errors.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-lock"></i>
+          </div>
+          <h3 class="benefit-title">Secure & Private</h3>
+          <p class="benefit-description">Your data stays secure with encrypted NFC technology. Control what information you share with each connection.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-leaf"></i>
+          </div>
+          <h3 class="benefit-title">Eco-Friendly</h3>
+          <p class="benefit-description">Reduce paper waste with a reusable digital card that never runs out. Good for your business and the planet.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-sync-alt"></i>
+          </div>
+          <h3 class="benefit-title">Always Up-to-Date</h3>
+          <p class="benefit-description">Change your information anytime without reprinting cards. Your contacts always have your latest details.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="benefit-title">Track Connections</h3>
+          <p class="benefit-description">Get insights on when and where your card is tapped, helping you measure your networking effectiveness.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3 class="benefit-title">Universal Compatibility</h3>
+          <p class="benefit-description">Works with all modern smartphones - no special app required. Just tap and connect instantly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="how-it-works" class="how-it-works">
+    <div class="section-container">
+      <div class="section-header">
+        <h2>How <span class="gradient-text">Linkel Works</span></h2>
+        <p class="section-subtitle">Getting started with your smart NFC business card is simple and straightforward</p>
+      </div>
+      <div class="steps-container">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3 class="step-title">Order Your Linkel Card</h3>
+            <p class="step-description">Get your sleek NFC smart card delivered, designed to impress.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3 class="step-title">Customize Your Digital Profile</h3>
+            <p class="step-description">You'll receive a personal web page where you can easily update your contact info, portfolio, and payment links anytime.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3 class="step-title">Tap & Share Instantly</h3>
+            <p class="step-description">Simply tap your Linkel card on any smartphone—no app needed—and share your full profile instantly.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3 class="step-title">Track Your Network Growth</h3>
+            <p class="step-description">See when and where your card is tapped so you can follow up and expand your connections.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="testimonials" class="testimonials">
+    <div class="section-container">
+      <div class="section-header">
+        <h2><span class="emoji">💬</span> Testimonials</h2>
+        <p class="section-subtitle">What our users say about Linkel NFC Cards</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-emoji">🗣️</div>
+          <div class="testimonial-content">
+            <p class="testimonial-text">"I use my Linkel card at every event. People love how fast they can access my profile and save my number. No more printed cards!"</p>
+            <div class="testimonial-author">
+              <p class="author-name">— Rami A.</p>
+              <p class="author-title">Freelance Designer</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-emoji">🗣️</div>
+          <div class="testimonial-content">
+            <p class="testimonial-text">"My clients are impressed when I tap my card on their phone and my page pops up. It feels futuristic and professional."</p>
+            <div class="testimonial-author">
+              <p class="author-name">— Sarah M.</p>
+              <p class="author-title">Makeup Artist</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-emoji">🗣️</div>
+          <div class="testimonial-content">
+            <p class="testimonial-text">"I love that the person doesn't need to install anything. I just tap and they have my WhatsApp, Instagram, and phone right there."</p>
+            <div class="testimonial-author">
+              <p class="author-name">— Hussein K.</p>
+              <p class="author-title">Barber</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section id="contact" class="contact">
+      <div class="section-container">
+        <div class="contact-container">
+          <div class="contact-content">
+            <h2>Have questions or ready to order?</h2>
+            <p class="contact-subtitle">We're here to help you connect smarter!</p>
+            <div class="contact-info">
+              <div class="contact-method">
+                <div class="contact-icon">
+                  <i class="fas fa-phone"></i>
+                </div>
+                <div class="contact-details">
+                  <h3>Phone</h3>
+                  <a href="tel:+96181791216">+961 81 791 216</a>
+                </div>
+              </div>
+              <div class="contact-method">
+                <div class="contact-icon">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div class="contact-details">
+                  <h3>Email</h3>
+                  <a href="mailto:info@linkelcards.com">info@linkelcards.com</a>
+                </div>
+              </div>
+              <div class="contact-method">
+                <div class="contact-icon">
+                  <i class="fab fa-instagram"></i>
+                </div>
+                <div class="contact-details">
+                  <h3>Instagram</h3>
+                  <a href="https://instagram.com/linkel.lb" target="_blank">@linkel.lb</a>
+                </div>
+              </div>
+            </div>
+            <div class="contact-message">
+              <p>Feel free to reach out to us anytime. Whether you want to learn more about our NFC business cards, need assistance customizing your profile, or want bulk order info, just drop us a message or call!</p>
+            </div>
+          </div>
+          <div class="contact-form">
+            <form name="contact" method="POST" data-netlify="true" netlify action="/thank-you.html">
+              <input type="hidden" name="form-name" value="contact" />
+              <div class="form-group">
+                <input type="text" name="name" placeholder="Your Name" required>
+              </div>
+              <div class="form-group">
+                <input type="email" name="email" placeholder="Your Email" required>
+              </div>
+              <div class="form-group">
+                <input type="tel" name="phone" placeholder="Your Phone Number">
+              </div>
+              <div class="form-group">
+                <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+              </div>
+              <button type="submit" class="button primary-button">Send Message</button>
+            </form>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+  <section id="faqs" class="faqs">
+    <div class="section-container">
+      <div class="section-header">
+        <h2>Frequently Asked Questions</h2>
+        <p class="section-subtitle">Everything you need to know about Linkel NFC Cards</p>
+      </div>
+      <div class="faq-container">
+        <div class="faq-item">
+          <button class="faq-question">
+            What is an NFC business card?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>An NFC business card is a smart card with embedded Near Field Communication technology that lets you share your digital profile, contact info, or portfolio instantly by tapping it on a smartphone.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Do I need an app to use Linkel cards?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>No app is needed. Linkel cards work with all modern smartphones by simply tapping the card against the phone's NFC sensor.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Can I update my contact information after ordering?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Yes! You will have access to a personal online profile where you can update your contact info, social links, portfolio, and payment details anytime without needing a new card.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            How long does delivery take?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Delivery times vary by location but typically take 7-14 business days. We ship worldwide.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Are the cards durable and waterproof?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Yes, Linkel NFC cards are made with durable materials and a protective coating to resist daily wear and are water-resistant.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Is my data secure when using Linkel cards?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Absolutely. Your information is stored securely and only shared when your card is tapped. You control what details to share.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Can multiple people tap my card at the same time?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>The card can be tapped by one device at a time, but it can be tapped repeatedly by different people throughout the day without any limits.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            What if my phone doesn't have NFC?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>If a phone doesn't support NFC, you can share your Linkel profile via a short URL printed on the card or through other sharing options on your profile page.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <span class="logo-text">Link</span><span class="logo-highlight">el</span>
+        <p>Smart NFC Business Cards</p>
+        <p>By Adam Succar</p>
+      </div>
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#why-choose">Why Choose</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#contact">Contact</a>
+        <a href="#faqs">FAQs</a>
+      </div>
+      <div class="footer-social">
+        <a href="https://instagram.com/linkelcards.com" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="mailto:info@linkelcards.com"><i class="fas fa-envelope"></i></a>
+        <a href="tel:+96181791216"><i class="fas fa-phone"></i></a>
+      </div>
+      <p class="footer-copy">&copy; 2025 Linkel. All rights reserved.</p>
+    </div>
+  </footer>
+  <script>
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navbarMenu = document.querySelector('.navbar-menu');
+    mobileMenu.addEventListener('click', () => {
+      mobileMenu.classList.toggle('active');
+      navbarMenu.classList.toggle('active');
+    });
+    const navLinks = document.querySelectorAll('.navbar-links');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        navbarMenu.classList.remove('active');
+      });
+    });
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetEl = document.querySelector(this.getAttribute('href'));
+        if (targetEl) {
+          targetEl.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          });
+        }
+      });
+    });
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(question => {
+      question.addEventListener('click', () => {
+        const answer = question.nextElementSibling;
+        const isActive = question.classList.contains('active');
+        faqQuestions.forEach(q => {
+          if (q !== question) {
+            q.classList.remove('active');
+            q.nextElementSibling.style.maxHeight = null;
+          }
+        });
+        if (!isActive) {
+          question.classList.add('active');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        } else {
+          question.classList.remove('active');
+          answer.style.maxHeight = null;
+        }
+      });
+    });
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Linkel",
+      "url": "https://linkelcards.com",
+      "sameAs": [
+        "https://www.instagram.com/linkel.lb"
+      ]
+    }
+    </script>
+
+</body>
+</html>
